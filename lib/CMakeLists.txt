@@ -75,7 +75,7 @@ if (WITH_ZEPHYR)
 else (WITH_ZEPHYR)
   # Build a shared library if so configured.
   if (WITH_SHARED_LIB)
-    set (_lib ${PROJECT_NAME}-shared)
+    set (_lib ${PROJECT_NAME}${LIBMETAL_PROJECT_SUFFIX}-shared)
     add_library (${_lib} SHARED ${_sources})
     target_link_libraries (${_lib} ${_deps})
     install (TARGETS ${_lib} LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
@@ -89,7 +89,7 @@ else (WITH_ZEPHYR)
 
   # Build a static library if so configured.
   if (WITH_STATIC_LIB)
-    set (_lib ${PROJECT_NAME}-static)
+    set (_lib ${PROJECT_NAME}${LIBMETAL_PROJECT_SUFFIX}-static)
     add_library (${_lib} STATIC ${_sources})
     install (TARGETS ${_lib} ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
     target_compile_options (${_lib} PUBLIC ${_ec_flgs})
