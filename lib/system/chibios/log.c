@@ -30,32 +30,45 @@
  */
 
 /*
- * @file	chibios/log.h
+ * @file	chibios/log.c
  * @brief	Chibios libmetal log handler definition.
  */
 
-#ifndef __METAL_METAL_LOG__H__
-#error "Include metal/log.h instead of metal/chibios/log.h"
-#endif
 #include <ch.h>
 #include <hal.h>
+#include <metal/log.h>
 #ifdef METAL_STDOUT_STREAM
 #include <usbcfg.h>
 #include <chprintf.h>
 #endif
 
-#ifndef __METAL_CHIBIOS_LOG__H__
-#define __METAL_CHIBIOS_LOG__H__
-
-#ifdef __cplusplus
-extern "C" {
+#ifdef METAL_STDOUT_STREAM
+static const char * const level_strs[] = {
+	"metal: emergency: ",
+	"metal: alert:     ",
+	"metal: critical:  ",
+	"metal: error:     ",
+	"metal: warning:   ",
+	"metal: notice:    ",
+	"metal: info:      ",
+	"metal: debug:     ",
+};
 #endif
 
 void metal_chibios_log_handler(enum metal_log_level level,
-			      const char *format, ...);
+			      const char *format, ...)
+{
+	(void)level;
+	(void)format;
+#ifdef METAL_STDOUT_STREAM
+	va_list args;
 
-#ifdef __cplusplus
-}
+	if (level <= METAL_LOG_EMERGENCY || level > METAL_LOG_DEBUG)
+		level = METAL_LOG_EMERGENCY;
+	chprintf(METAL_STDOUT_STREAM, "%s", level_strs[level]);
+
+	va_start(args, format);
+	chvprintf(METAL_STDOUT_STREAM, format, args);
+	va_end(args);
 #endif
-
-#endif /* __METAL_CHIBIOS_LOG__H__ */
+}

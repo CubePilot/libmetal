@@ -15,6 +15,6 @@
 unsigned long long metal_get_timestamp(void)
 {
 	/* TODO: Implement timestamp for chibios system */
-	return chVTGetSystemTimeX();
+	return chTimeI2US64(chVTGetSystemTimeX());
 }
 
