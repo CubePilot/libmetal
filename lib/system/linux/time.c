@@ -13,7 +13,8 @@
 #include <time.h>
 #include <metal/time.h>
 
-#define NS_PER_S        (1000 * 1000 * 1000)
+#define US_PER_S        (1000 * 1000)
+#define NS_PER_US       (1000)
 
 unsigned long long metal_get_timestamp(void)
 {
@@ -26,8 +27,8 @@ unsigned long long metal_get_timestamp(void)
 		metal_log(METAL_LOG_ERROR, "clock_gettime failed!\n");
 		return t;
 	}
-	t = tp.tv_sec * (NS_PER_S);
-	t += tp.tv_nsec;
+	t = tp.tv_sec * (US_PER_S);
+	t += tp.tv_nsec/NS_PER_US;
 
 	return t;
 }
